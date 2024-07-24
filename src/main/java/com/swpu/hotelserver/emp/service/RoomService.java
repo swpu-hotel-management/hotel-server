@@ -13,7 +13,7 @@ import java.util.List;
  * @author huchengbo
  * @since 2024-07-24
  */
-public interface RoomService extends IService<Room> {
+public interface RoomService{
     public List<Room> listAllRooms();
     public Room getRoomById(Integer id);
     public boolean addRoom(Room room);
