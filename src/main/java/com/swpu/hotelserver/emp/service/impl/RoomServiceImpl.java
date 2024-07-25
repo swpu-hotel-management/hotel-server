@@ -56,7 +56,7 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
      */
     @Override
     public boolean updateRoom(Room room) {
-        return super.updateById(room);
+        return roomMapper.updateRoom(room);
     }
 
     /**

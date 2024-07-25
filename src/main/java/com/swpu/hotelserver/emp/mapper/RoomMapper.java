@@ -27,4 +27,6 @@ public interface RoomMapper extends BaseMapper<Room> {
 
     @Delete("DELETE FROM room WHERE room_num = #{roomNum}")
     boolean deleteRoom(Integer roomNum);
+
+    boolean updateRoom(Room room);
 }

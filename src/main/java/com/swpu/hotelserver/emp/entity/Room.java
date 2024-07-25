@@ -59,6 +59,4 @@ public class Room implements Serializable {
      */
     @TableField("status")
     private Integer status;
-
-
 }

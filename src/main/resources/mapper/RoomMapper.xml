@@ -8,7 +8,7 @@
         <result column="room_num" property="roomNum" />
         <result column="type" property="type" />
         <result column="price" property="price" />
-        <result column="desc" property="desc" />
+        <result column="description" property="description" />
         <result column="status" property="status" />
     </resultMap>
 
@@ -16,5 +16,17 @@
     <sql id="Base_Column_List">
         id, room_num, type, price, desc, status
     </sql>
+
+    <!-- 更新房间的方法 -->
+    <update id="updateRoom">
+        UPDATE room
+        <set>
+            <if test="type != null">type = #{type},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        WHERE room_num = #{roomNum}
+    </update>
 
 </mapper>
