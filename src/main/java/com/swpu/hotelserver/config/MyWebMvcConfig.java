@@ -20,9 +20,9 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
 /*addPathPatterns那些url使用拦截器
 * excludePathPatterns那些url不使用拦截器
 * */
-    @Override
+    /*@Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/emp/login","/emp/vcode","/emp/img","/view/**");
-    }
+    }*/
 }
