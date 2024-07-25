@@ -49,8 +49,6 @@ public class RoomController {
     public boolean addRoom(@RequestBody Room room){
         return roomService.addRoom(room);
     }
-    @Autowired
-    private RoomService roomService;
     @GetMapping("/checkPage")
     public Result<?> checkPage(RoomCheckPageDTO roomCheckPageDTO) {
       log.info("房间入住登记分页查询:{}",roomCheckPageDTO);
@@ -60,8 +58,8 @@ public class RoomController {
       obj.put("rows", page.getRecords());
       return new Result<>().success().put(obj);
     }
-}
-
     @DeleteMapping("/delete")
     public boolean deleteRoom(Integer roomNum){return roomService.deleteRoom(roomNum);}
 }
+
+
