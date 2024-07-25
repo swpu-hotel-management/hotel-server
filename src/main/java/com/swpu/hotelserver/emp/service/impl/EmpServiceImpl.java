@@ -1,22 +1,28 @@
 package com.swpu.hotelserver.emp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.swpu.hotelserver.emp.dto.EmpExample;
 import com.swpu.hotelserver.emp.dto.LoginUser;
+import com.swpu.hotelserver.emp.dto.QuseryPageEmp;
 import com.swpu.hotelserver.emp.entity.Emp;
 import com.swpu.hotelserver.emp.mapper.EmpMapper;
 import com.swpu.hotelserver.emp.service.EmpService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -85,5 +91,50 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
         Emp one = this.getOne(wrapper);
 
         return one.getPassword();
+    }
+
+    @Override
+    public Page<Emp> getPageUser(QuseryPageEmp quseryPageEmp) {
+        //初始化page对象
+        Page<Emp> p=new Page<>(quseryPageEmp.getPageNumber(), quseryPageEmp.getPageSize());
+
+        //根据page对象做分页查询
+        QueryWrapper<Emp> queryWrapper=new QueryWrapper();
+        if (!ObjectUtils.isEmpty(quseryPageEmp.getUsername())){
+            queryWrapper.like("username",quseryPageEmp.getUsername());
+//        queryWrapper.eq("username",quseryPageUser.getUsername());
+        }else if(!ObjectUtils.isEmpty(quseryPageEmp.getName())){
+            queryWrapper.like("name",quseryPageEmp.getName());
+        }
+        else if(!ObjectUtils.isEmpty(quseryPageEmp.getSex())){
+            queryWrapper.eq("sex",quseryPageEmp.getSex());
+        }
+        Page<Emp> page = this.page(p, queryWrapper);
+        return page;
+    }
+
+    @Override
+    public String saveEmpImg(MultipartFile file) {
+        String desDir="E:\\Test\\springo\\files";
+        String fileName=file.getOriginalFilename();
+        String filePath=desDir+ File.separator+fileName;
+        File desFile=new File(filePath);
+        try {
+            file.transferTo(desFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //拼接图片映射url路径
+        String imgUrl="http://localhost:8088/view/"+fileName;
+
+        return imgUrl;
+    }
+
+    @Override
+    public boolean addEmp(EmpExample empExample) {
+        Emp emp=new Emp();
+
+        BeanUtils.copyProperties(empExample,emp);
+        return this.save(emp);
     }
 }
