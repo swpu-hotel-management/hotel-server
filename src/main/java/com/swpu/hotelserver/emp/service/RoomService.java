@@ -17,10 +17,11 @@ import java.util.List;
  */
 public interface RoomService{
     public List<Room> listAllRooms();
-    public Room getRoomById(Integer id);
+    public Room getRoomById(Integer roomNum);
     public boolean addRoom(Room room);
     public boolean updateRoom(Room room);
     public boolean deleteRoom(Integer id);
 
     Page<Room> getRoomCheckPage(RoomCheckPageDTO roomCheckPageDTO);
+    public boolean deleteRoom(Integer roomNum);
 }
