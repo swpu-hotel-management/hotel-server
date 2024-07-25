@@ -1,10 +1,14 @@
 package com.swpu.hotelserver.emp.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.swpu.hotelserver.emp.dto.RoomCheckPageDTO;
 import com.swpu.hotelserver.emp.entity.Room;
 import com.swpu.hotelserver.emp.mapper.RoomMapper;
 import com.swpu.hotelserver.emp.service.RoomService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -65,5 +69,17 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     @Override
     public boolean deleteRoom(Integer id) {
         return super.removeById(id);
+    }
+
+    @Override
+    public Page<Room> getRoomCheckPage(RoomCheckPageDTO roomCheckPageDTO) {
+        Page<Room> page = new Page<>(roomCheckPageDTO.getPageNumber(), roomCheckPageDTO.getPageSize());
+            QueryWrapper<Room> w = new QueryWrapper<>();
+            w.like(roomCheckPageDTO.getRoomNum()!=null, "room_num", roomCheckPageDTO.getRoomNum())
+                    .like(roomCheckPageDTO.getType()!=null, "type", roomCheckPageDTO.getType())
+                    .like(roomCheckPageDTO.getStatus()!=null, "status", roomCheckPageDTO.getStatus())
+                    .orderByAsc("id");
+            this.page(page, w);
+            return page;
     }
 }

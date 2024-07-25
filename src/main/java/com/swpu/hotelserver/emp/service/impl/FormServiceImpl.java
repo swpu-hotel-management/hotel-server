@@ -1,7 +1,11 @@
 package com.swpu.hotelserver.emp.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swpu.hotelserver.emp.dto.FormDTO;
+import com.swpu.hotelserver.emp.dto.FormPageDTO;
 import com.swpu.hotelserver.emp.entity.Client;
 import com.swpu.hotelserver.emp.entity.Form;
 import com.swpu.hotelserver.emp.mapper.ClientMapper;
@@ -9,12 +13,13 @@ import com.swpu.hotelserver.emp.mapper.FormMapper;
 import com.swpu.hotelserver.emp.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class FormServiceImpl implements FormService {
+public class FormServiceImpl extends ServiceImpl<FormMapper, Form> implements FormService {
     @Autowired
     private FormMapper formMapper;
     @Autowired
@@ -72,5 +77,17 @@ public class FormServiceImpl implements FormService {
         LocalDateTime originEndTime = formMapper.getEndTime(id);
         LocalDateTime endTime = originEndTime.plusHours(hours);
         formMapper.reIn(id,endTime);
+    }
+
+    @Override
+    public Page<Form> getFormPage(FormPageDTO formPageDTO) {
+        Page<Form> page = new Page<>(formPageDTO.getPageNumber(), formPageDTO.getPageSize());
+        QueryWrapper<Form> w = new QueryWrapper<>();
+        w.like(formPageDTO.getRoomNum()!=null, "roomNum", formPageDTO.getRoomNum())
+                .like(formPageDTO.getType()!=null, "type", formPageDTO.getType())
+                .ge("start_time", formPageDTO.getStartTime())
+                .le("end_time", formPageDTO.getEndTime());
+        this.page(page,w);
+        return page;
     }
 }
