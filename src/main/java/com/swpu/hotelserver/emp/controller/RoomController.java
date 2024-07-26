@@ -1,6 +1,7 @@
 package com.swpu.hotelserver.emp.controller;
 
 import com.swpu.hotelserver.common.result.Result;
+import com.swpu.hotelserver.emp.dto.DeleteRoomRequest;
 import com.swpu.hotelserver.emp.entity.Room;
 import com.swpu.hotelserver.emp.service.RoomService;
 import org.apache.ibatis.annotations.Select;
@@ -46,8 +47,10 @@ public class RoomController {
         return roomService.addRoom(room);
     }
 
-    @DeleteMapping("/delete")
-    public boolean deleteRoom(Integer roomNum){return roomService.deleteRoom(roomNum);}
+    @PostMapping("/delete")
+    public boolean deleteRoom(@RequestBody DeleteRoomRequest request) {
+        return roomService.deleteRoom(request.getRoomNum());
+    }
 
     @PutMapping("/update")
     public boolean updateRoom(@RequestBody Room room){return roomService.updateRoom(room);}
