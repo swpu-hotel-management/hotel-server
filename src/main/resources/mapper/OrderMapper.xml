@@ -6,8 +6,25 @@
     <resultMap id="BaseResultMap" type="com.swpu.hotelserver.emp.entity.Order">
         <id column="id" property="id" />
         <result column="room_id" property="roomId" />
-        <result column="client_id" property="clientId" />
+        <result column="client_name" property="clientName" />
         <result column="order_num" property="orderNum" />
     </resultMap>
+
+    <select id="pageQuery" resultType="com.swpu.hotelserver.emp.dto.pageRoomOrderDTO">
+        select o.*,r.price
+        from order_form o
+        inner join hotel_db.room r on o.room_id = r.room_num
+        <where>
+            <if test="orderPageDTO.orderNum != null and orderPageDTO.orderNum != ''">
+                and o.order_num like concat('%',#{orderNum},'%')
+            </if>
+            <if test="orderPageDTO.clientName != null and orderPageDTO.clientName != ''">
+                and o.client_name like concat('%',#{clientName},'%')
+            </if>
+            <if test="orderPageDTO.createTime != null and orderPageDTO.createTime != ''">
+                and o.create_time between #{startTimeStr} and #{endTimeStr}
+            </if>
+        </where>
+    </select>
 
 </mapper>
