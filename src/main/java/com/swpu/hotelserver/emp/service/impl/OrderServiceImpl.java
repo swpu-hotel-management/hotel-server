@@ -3,8 +3,10 @@ package com.swpu.hotelserver.emp.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.swpu.hotelserver.common.utils.PerCaculateHandle;
 import com.swpu.hotelserver.emp.dto.AddOrderDTO;
 import com.swpu.hotelserver.emp.dto.OrderPageDTO;
+import com.swpu.hotelserver.emp.dto.OrderStatisticDTO;
 import com.swpu.hotelserver.emp.dto.pageRoomOrderDTO;
 import com.swpu.hotelserver.emp.entity.Order;
 import com.swpu.hotelserver.emp.mapper.OrderMapper;
@@ -36,12 +38,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Page<OrderPageDTO> p = new Page<>(orderPageDTO.getPage(), orderPageDTO.getPageSize());
         String startTimeStr = null;
         String endTimeStr = null;
-//        if(!ObjectUtils.isEmpty(orderPageDTO.getOrderNum())){
-//            wrapper.like("order_num", orderPageDTO.getOrderNum());
-//        }
-//        if(!ObjectUtils.isEmpty(orderPageDTO.getClientName())){
-//            wrapper.like("client_name", orderPageDTO.getClientName());
-//        }
         if(!ObjectUtils.isEmpty(orderPageDTO.getCreateTime())){
             // 使用Calendar来获取当天的开始和结束时间
             Calendar calendar = Calendar.getInstance();
@@ -61,12 +57,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             startTimeStr = sdf.format(calendar.getTime());
             endTimeStr = sdf.format(endTimeCalendar.getTime());
 
-//            wrapper.between("create_time", startTimeStr, endTimeStr);
         }
         Page<pageRoomOrderDTO> orderPage = orderMapper.pageQuery(p,orderPageDTO,startTimeStr,endTimeStr);
         return orderPage;
     }
 
+    /**
+     * 新增订单
+     * @param addOrderDTO
+     * @return
+     */
     @Override
     public boolean addOrder(AddOrderDTO addOrderDTO) {
         Order order = new Order();
@@ -74,5 +74,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return this.save(order);
     }
 
+    /**
+     * 订单统计
+     * @return
+     */
+    @Override
+    public OrderStatisticDTO getData() {
+        PerCaculateHandle perCaculateHandle = new PerCaculateHandle();
 
+        OrderStatisticDTO odto = orderMapper.selectData();
+        odto.setOrderNumPerWeek(perCaculateHandle.calculateAdjustedGrowthRate(odto.getOrderNumWeek(),odto.getOrderNumLastWeek()));
+        odto.setOrderNumPerMonth(perCaculateHandle.calculateAdjustedGrowthRate(odto.getOrderNumMonth(),odto.getOrderNumLastMonth()));
+        odto.setOrderTurnoverPerWeek(perCaculateHandle.calculateAdjustedGrowthRate(odto.getWeekTurnover(),odto.getLastWeekTurnover()));
+        odto.setOrderTurnoverPerMonth(perCaculateHandle.calculateAdjustedGrowthRate(odto.getMonthTurnover(),odto.getLastMonthTurnover()));
+//        odto.setOrderTurnoverPerMonth(perCaculateHandle.calculateAdjustedGrowthRate(129,133));
+//        odto.setOrderTurnoverPerMonth(perCaculateHandle.calculateAdjustedGrowthRate(11,11));
+        return odto;
+    }
 }

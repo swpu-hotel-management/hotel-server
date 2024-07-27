@@ -27,4 +27,28 @@
         </where>
     </select>
 
+    <select id="selectData" resultType="com.swpu.hotelserver.emp.dto.OrderStatisticDTO">
+        select
+            sum(case when date(create_time) = curdate() then 1 else 0 end) as orderNumToday,
+            sum(case when date(create_time) = curdate() then price else 0 end ) as dayTurnover,
+
+            sum(case when date(create_time) = curdate() - interval 1 day then 1 else 0 end ) as orderNumYesterday,
+            sum(case when date(create_time) = curdate() - interval 1 day then price else 0 end ) as yesterdayTurnover,
+
+            sum(case when yearweek(create_time, 1) = yearweek(curdate(), 1) then 1 else 0 end ) as orderNumWeek,
+            sum(case when yearweek(create_time, 1) = yearweek(curdate(), 1) then price else 0 end ) as weekTurnover,
+
+            sum(case when yearweek(create_time, 1) = yearweek(curdate() - interval 1 week , 1) then 1 else 0 end ) as orderNumLastWeek,
+            sum(case when yearweek(create_time, 1) = yearweek(curdate() - interval 1 week , 1) then price else 0 end) as lastWeekTurnover,
+
+            sum(case when year(create_time) = year(curdate()) and month(create_time) = month(curdate()) then 1 else 0 end ) as orderNumMonth,
+            sum(case when year(create_time) = year(curdate()) and month(create_time) = month(curdate()) then price else 0 end ) as monthTurnover,
+
+            sum(case when year(create_time) = year(curdate() - interval 1 month ) and month(create_time) = month(curdate() - interval 1 month ) then 1 else 0 end) as orderNumLastMonth,
+            sum(case when year(create_time) = year(curdate() - interval 1 month ) and month(create_time) = month(curdate() - interval 1 month ) then price else 0 end) as lastMonthTurnover
+        from
+            order_form o
+        inner join hotel_db.room r on o.room_id = r.room_num
+    </select>
+
 </mapper>
