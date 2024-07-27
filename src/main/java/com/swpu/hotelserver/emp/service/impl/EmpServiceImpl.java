@@ -2,6 +2,7 @@ package com.swpu.hotelserver.emp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.swpu.hotelserver.emp.dto.EmpExample;
 import com.swpu.hotelserver.emp.dto.LoginUser;
@@ -9,7 +10,6 @@ import com.swpu.hotelserver.emp.dto.QuseryPageEmp;
 import com.swpu.hotelserver.emp.entity.Emp;
 import com.swpu.hotelserver.emp.mapper.EmpMapper;
 import com.swpu.hotelserver.emp.service.EmpService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -113,6 +113,8 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
         return page;
     }
 
+
+
     @Override
     public String saveEmpImg(MultipartFile file) {
         String desDir="E:\\Test\\springo\\files";
@@ -130,11 +132,31 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
         return imgUrl;
     }
 
+
+
     @Override
     public boolean addEmp(EmpExample empExample) {
         Emp emp=new Emp();
 
         BeanUtils.copyProperties(empExample,emp);
-        return this.save(emp);
+        boolean b = this.save(emp);
+
+        empmapper.addEmpRole(emp);
+        return b;
+    }
+
+    @Override
+    public boolean updateEmp(EmpExample empExample) {
+        Emp emp=new Emp();
+        BeanUtils.copyProperties(empExample,emp);
+        empmapper.updateEmpRole(empExample);
+        boolean b = this.updateById(emp);
+        return b;
+    }
+
+    @Override
+    public Boolean removeEmpRole(Integer id) {
+        return  empmapper.removeEmpRole(id);
+
     }
 }

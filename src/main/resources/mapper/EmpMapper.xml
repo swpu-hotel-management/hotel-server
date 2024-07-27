@@ -20,9 +20,28 @@
         <result column="update_by" property="updateBy" />
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, name, id_num, username, password, age, sex, phone, position, img_url, create_time, update_time, create_by, update_by
-    </sql>
+    <update id="updateEmpRole">
+        UPDATE emp_role
+            INNER JOIN emp ON emp.id = emp_role.emp_id
+            INNER JOIN role ON role.id = emp_role.role_id
+        SET emp_role.role_id = (SELECT id FROM hotel_db.role WHERE role_name = #{empExample.position})
+        WHERE emp_role.emp_id = #{empExample.id} AND #{empExample.position} != role.role_name;
+
+
+
+    </update>
+    <insert id="addEmpRole">
+        INSERT INTO emp_role (emp_id, role_id)
+        SELECT #{emps.id}, r.id
+        FROM hotel_db.role r
+        WHERE r.role_name = #{emps.position}
+    </insert>
+
+
+    <delete id="removeEmpRole">
+        delete from emp_role
+        where emp_role.emp_id=#{id}
+    </delete>
+
 
 </mapper>

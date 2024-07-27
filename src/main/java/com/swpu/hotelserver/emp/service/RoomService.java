@@ -2,6 +2,7 @@ package com.swpu.hotelserver.emp.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.swpu.hotelserver.emp.dto.RoomCheckPageDTO;
 import com.swpu.hotelserver.emp.entity.Room;
 
 import java.util.List;
@@ -24,5 +25,6 @@ public interface RoomService{
     List<Room> getRoomByType(String type);
 
     List<Room> getRoomByStatus(Integer status);
+    Page<Room> getRoomCheckPage(RoomCheckPageDTO roomCheckPageDTO);
     Page<Room> pageQuery(Page<Room> page, Room roomFilter);
 }

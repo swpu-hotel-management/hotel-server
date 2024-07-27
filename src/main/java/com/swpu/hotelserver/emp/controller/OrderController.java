@@ -1,24 +1,20 @@
 package com.swpu.hotelserver.emp.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swpu.hotelserver.common.result.Result;
-import com.swpu.hotelserver.emp.dto.AddOrderDTO;
-import com.swpu.hotelserver.emp.dto.OrderPageDTO;
-import com.swpu.hotelserver.emp.entity.Order;
+import com.swpu.hotelserver.emp.dto.*;
 import com.swpu.hotelserver.emp.service.OrderService;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @Slf4j
 @RequestMapping("/order")
-//@Api("订单相关接口")
+@Api("订单相关接口")
 public class OrderController {
 
     @Autowired
@@ -30,10 +26,10 @@ public class OrderController {
      * @return
      */
     @GetMapping("/page")
-//    @ApiOperation("订单分页查询")
+    @ApiOperation("订单分页查询")
     public Result<?> page(OrderPageDTO orderPageDTO){
         log.info("分页查询，参数：{}",orderPageDTO);
-        Page<Order> page = orderService.pageQuery(orderPageDTO);
+        IPage<pageRoomOrderDTO> page = orderService.pageQuery(orderPageDTO);
         JSONObject obj = new JSONObject();
         obj.put("total",page.getTotal());
         obj.put("rows",page.getRecords());
@@ -55,16 +51,25 @@ public class OrderController {
 
     /**
      * 删除订单
-     * @param ids
+     * @param orderDeleteDTO
      * @return
      */
-    @DeleteMapping("/{ids}")
-//    @ApiOperation("删除订单")
-    public Result<?> deleteOrder(@PathVariable List<Integer> ids){
-        log.info("删除订单,ids:{}",ids);
-        boolean b = orderService.removeByIds(ids);
+    @PostMapping("/delete")
+    @ApiOperation("删除订单")
+    public Result<?> deleteOrder(@RequestBody OrderDeleteDTO orderDeleteDTO){
+        log.info("删除订单,ids:{}",orderDeleteDTO);
+        boolean b = orderService.removeByIds(orderDeleteDTO.getIds());
         return b?new Result<>().success("删除成功"):new Result<>().error("删除失败");
     }
 
-
+    /**
+     * 订单统计
+     * @return
+     */
+    @GetMapping("/getdata")
+    @ApiOperation("订单统计")
+    public Result<?> getData(){
+        OrderStatisticDTO orderStatisticDTOList = orderService.getData();
+        return new Result<>().success().put(orderStatisticDTOList);
+    }
 }
