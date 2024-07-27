@@ -1,11 +1,10 @@
 package com.swpu.hotelserver.emp.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swpu.hotelserver.emp.dto.AddOrderDTO;
 import com.swpu.hotelserver.emp.dto.OrderPageDTO;
-import com.swpu.hotelserver.emp.dto.pageRoomOrderDTO;
 import com.swpu.hotelserver.emp.entity.Order;
 import com.swpu.hotelserver.emp.mapper.OrderMapper;
 import com.swpu.hotelserver.emp.service.OrderService;
@@ -31,17 +30,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @return
      */
     @Override
-    public IPage<pageRoomOrderDTO> pageQuery(OrderPageDTO orderPageDTO) {
+    public Page<Order> pageQuery(OrderPageDTO orderPageDTO) {
 
-        Page<OrderPageDTO> p = new Page<>(orderPageDTO.getPage(), orderPageDTO.getPageSize());
-        String startTimeStr = null;
-        String endTimeStr = null;
-//        if(!ObjectUtils.isEmpty(orderPageDTO.getOrderNum())){
-//            wrapper.like("order_num", orderPageDTO.getOrderNum());
-//        }
-//        if(!ObjectUtils.isEmpty(orderPageDTO.getClientName())){
-//            wrapper.like("client_name", orderPageDTO.getClientName());
-//        }
+        Page<Order> p = new Page<>(orderPageDTO.getPage(), orderPageDTO.getPageSize());
+        QueryWrapper<Order> wrapper = new QueryWrapper<>();
+        if(!ObjectUtils.isEmpty(orderPageDTO.getOrderNum())){
+            wrapper.like("order_num", orderPageDTO.getOrderNum());
+        }
+        if(!ObjectUtils.isEmpty(orderPageDTO.getClientName())){
+            wrapper.like("client_name", orderPageDTO.getClientName());
+        }
         if(!ObjectUtils.isEmpty(orderPageDTO.getCreateTime())){
             // 使用Calendar来获取当天的开始和结束时间
             Calendar calendar = Calendar.getInstance();
@@ -58,12 +56,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
             // 转换为数据库可识别的日期时间格式
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            startTimeStr = sdf.format(calendar.getTime());
-            endTimeStr = sdf.format(endTimeCalendar.getTime());
+            String startTimeStr = sdf.format(calendar.getTime());
+            String endTimeStr = sdf.format(endTimeCalendar.getTime());
 
-//            wrapper.between("create_time", startTimeStr, endTimeStr);
+            wrapper.between("create_time", startTimeStr, endTimeStr);
         }
-        Page<pageRoomOrderDTO> orderPage = orderMapper.pageQuery(p,orderPageDTO,startTimeStr,endTimeStr);
+        Page<Order> orderPage = this.page(p,wrapper);
         return orderPage;
     }
 

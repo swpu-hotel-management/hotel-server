@@ -1,16 +1,20 @@
 package com.swpu.hotelserver.emp.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.swpu.hotelserver.common.result.Result;
 import com.swpu.hotelserver.emp.dto.AddOrderDTO;
 import com.swpu.hotelserver.emp.dto.OrderDeleteDTO;
 import com.swpu.hotelserver.emp.dto.OrderPageDTO;
-import com.swpu.hotelserver.emp.dto.pageRoomOrderDTO;
+import com.swpu.hotelserver.emp.entity.Order;
 import com.swpu.hotelserver.emp.service.OrderService;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -30,7 +34,7 @@ public class OrderController {
 //    @ApiOperation("订单分页查询")
     public Result<?> page(OrderPageDTO orderPageDTO){
         log.info("分页查询，参数：{}",orderPageDTO);
-        IPage<pageRoomOrderDTO> page = orderService.pageQuery(orderPageDTO);
+        Page<Order> page = orderService.pageQuery(orderPageDTO);
         JSONObject obj = new JSONObject();
         obj.put("total",page.getTotal());
         obj.put("rows",page.getRecords());
