@@ -17,12 +17,16 @@ public interface FormMapper extends BaseMapper<Form> {
     @Update("update room set status=2 where room_num=#{roomNum}")
     void setStatus(String roomNum);
 
-    @Update("update room set status=1 where id=#{id}")
-    void checkOut(Integer id);
+    @Update("update room set status=1 where room_num=#{roomNum}")
+    void checkOut(String roomNum);
 
     @Update("update form set end_time=#{hours} where id=#{id}")
     void reIn(Integer id, LocalDateTime hours);
 
     @Select("select end_time from form where id=#{id}")
     LocalDateTime getEndTime(Integer id);
+    @Update("update form set status=1 where id=#{id}")
+    void updateStatus(Integer id);
+    @Select("select room_num from form where id=#{id};")
+    String getRoomNum(Integer id);
 }
