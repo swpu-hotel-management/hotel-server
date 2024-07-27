@@ -6,7 +6,7 @@
     <resultMap id="BaseResultMap" type="com.swpu.hotelserver.emp.entity.Order">
         <id column="id" property="id" />
         <result column="room_id" property="roomId" />
-        <result column="client_id" property="clientId" />
+        <result column="client_name" property="clientName" />
         <result column="order_num" property="orderNum" />
     </resultMap>
 
