@@ -85,27 +85,5 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
             return page;
     }
 
-    @Override
-    public Page<Room> getRoomCheckPage(RoomCheckPageDTO roomCheckPageDTO) {
-        Page<Room> page = new Page<>(roomCheckPageDTO.getPageNumber(), roomCheckPageDTO.getPageSize());
-            QueryWrapper<Room> w = new QueryWrapper<>();
-            w.like(roomCheckPageDTO.getRoomNum()!=null, "room_num", roomCheckPageDTO.getRoomNum())
-                    .like(roomCheckPageDTO.getType()!=null, "type", roomCheckPageDTO.getType())
-                    .like(roomCheckPageDTO.getStatus()!=null, "status", roomCheckPageDTO.getStatus())
-                    .orderByAsc("id");
-            this.page(page, w);
-            return page;
-    }
 
-    @Override
-    public Page<Room> getRoomCheckPage(RoomCheckPageDTO roomCheckPageDTO) {
-        Page<Room> page = new Page<>(roomCheckPageDTO.getPageNumber(), roomCheckPageDTO.getPageSize());
-            QueryWrapper<Room> w = new QueryWrapper<>();
-            w.like(roomCheckPageDTO.getRoomNum()!=null, "room_num", roomCheckPageDTO.getRoomNum())
-                    .like(roomCheckPageDTO.getType()!=null, "type", roomCheckPageDTO.getType())
-                    .like(roomCheckPageDTO.getStatus()!=null, "status", roomCheckPageDTO.getStatus())
-                    .orderByAsc("id");
-            this.page(page, w);
-            return page;
-    }
 }

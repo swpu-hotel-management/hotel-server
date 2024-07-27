@@ -11,7 +11,6 @@ import com.swpu.hotelserver.emp.dto.QuseryPageEmp;
 import com.swpu.hotelserver.emp.entity.Emp;
 import com.swpu.hotelserver.emp.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -111,15 +110,18 @@ public class EmpController {
     @PostMapping("/update")
     public Result<?> updateEmp(@RequestBody EmpExample empExample){
         log.info("empExample:{}", empExample);
-        Emp emp=new Emp();
-        BeanUtils.copyProperties(empExample,emp);
-        boolean b = empService.updateById(emp);
+
+        boolean b = empService.updateEmp(empExample);
+
         return b?new Result<>().success().put("修改成功"):new Result<>().error().put("修改失败");
     }
     @GetMapping("/delete")
     public Result<?> deleteEmp(Integer id){
         boolean b = empService.removeById(id);
+        Boolean b1=empService.removeEmpRole(id);
         return b?new Result<>().success().put("删除成功"):new Result<>().error().put("删除失败");
     }
+
+
 
 }
