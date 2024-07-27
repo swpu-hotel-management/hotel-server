@@ -70,5 +70,9 @@ public class Form implements Serializable {
     @TableField("client4_name")
     private String client4Name;
 
-
+    /**
+     * 是否退房,0未退房，1已退房
+     */
+    @TableField("status")
+    private Integer status;
 }

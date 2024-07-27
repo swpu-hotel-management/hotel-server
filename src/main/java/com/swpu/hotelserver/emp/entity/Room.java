@@ -51,8 +51,8 @@ public class Room implements Serializable {
     /**
      * 房间描述
      */
-    @TableField("desc")
-    private String desc;
+    @TableField("description")
+    private String description;
 
     /**
      * 表示房间状态，1为可用，2为占用，-1为清扫
