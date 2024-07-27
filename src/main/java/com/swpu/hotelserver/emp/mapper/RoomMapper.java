@@ -29,4 +29,7 @@ public interface RoomMapper extends BaseMapper<Room> {
     boolean deleteRoom(Integer roomNum);
 
     boolean updateRoom(Room room);
+
+    @Select("select * from room where type = #{type}")
+    List<Room> getRoomByType(String type);
 }

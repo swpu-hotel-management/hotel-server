@@ -38,12 +38,15 @@ public class RoomController {
     }
 
     @GetMapping("/select")
-    public Room getRoomById(Integer roomNum){
+    public Room getRoomById(@RequestParam("roomNum") Integer roomNum) {
         return roomService.getRoomById(roomNum);
     }
 
+    @GetMapping("/selectByType")
+    public List<Room> getRoomByType(@RequestParam("type") String type){return (List<Room>) roomService.getRoomByType(type);}
+
     @PostMapping("/add")
-    public boolean addRoom(@RequestBody Room room){
+    public boolean addRoom(@RequestBody Room room) {
         return roomService.addRoom(room);
     }
 

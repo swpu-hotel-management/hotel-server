@@ -68,4 +68,9 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     public boolean deleteRoom(Integer roomNum) {
         return roomMapper.deleteRoom(roomNum);
     }
+
+    @Override
+    public List<Room> getRoomByType(String type) {
+        return roomMapper.getRoomByType(type);
+    }
 }

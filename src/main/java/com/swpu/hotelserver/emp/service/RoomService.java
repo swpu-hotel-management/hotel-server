@@ -19,4 +19,6 @@ public interface RoomService{
     public boolean addRoom(Room room);
     public boolean updateRoom(Room room);
     public boolean deleteRoom(Integer roomNum);
+
+    List<Room> getRoomByType(String type);
 }
