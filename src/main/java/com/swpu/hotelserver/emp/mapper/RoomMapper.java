@@ -1,6 +1,7 @@
 package com.swpu.hotelserver.emp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.swpu.hotelserver.emp.entity.Room;
 import org.apache.ibatis.annotations.*;
 
@@ -32,4 +33,9 @@ public interface RoomMapper extends BaseMapper<Room> {
 
     @Select("select * from room where type = #{type}")
     List<Room> getRoomByType(String type);
+
+    @Select("select * from room where status = #{status}")
+    List<Room> getRoomByStatus(Integer status);
+
+    Page<Room> page(Page<Room> page, @Param("room") Room room);
 }

@@ -28,5 +28,21 @@
         </set>
         WHERE room_num = #{roomNum}
     </update>
+    <!-- 分页查询 -->
+    <!-- 分页查询 -->
+    <select id="page" parameterType="com.swpu.hotelserver.emp.entity.Room" resultType="com.swpu.hotelserver.emp.entity.Room">
+        SELECT * FROM room
+        <where>
+            <if test="room.roomNum != null">
+                AND room_num = #{room.roomNum}
+            </if>
+            <if test="room.type != null">
+                AND type = #{room.type}
+            </if>
+            <if test="room.status != null">
+                AND status = #{room.status}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.swpu.hotelserver.emp.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swpu.hotelserver.emp.entity.Room;
 import com.swpu.hotelserver.emp.mapper.RoomMapper;
@@ -72,5 +73,15 @@ public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements Ro
     @Override
     public List<Room> getRoomByType(String type) {
         return roomMapper.getRoomByType(type);
+    }
+
+    @Override
+    public List<Room> getRoomByStatus(Integer status) {
+        return roomMapper.getRoomByStatus(status);
+    }
+
+    @Override
+    public Page<Room> pageQuery(Page<Room> page, Room room) {
+        return roomMapper.page(page, room);
     }
 }

@@ -1,5 +1,6 @@
 package com.swpu.hotelserver.emp.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swpu.hotelserver.emp.entity.Room;
 
@@ -21,4 +22,7 @@ public interface RoomService{
     public boolean deleteRoom(Integer roomNum);
 
     List<Room> getRoomByType(String type);
+
+    List<Room> getRoomByStatus(Integer status);
+    Page<Room> pageQuery(Page<Room> page, Room roomFilter);
 }
