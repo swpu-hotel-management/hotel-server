@@ -37,4 +37,6 @@ public interface EmpService extends IService<Emp> {
 
     Boolean removeEmpRole(Integer id);
 
+    Boolean showEmpmenu(Integer id);
+
 }

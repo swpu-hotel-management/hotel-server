@@ -117,9 +117,16 @@ public class EmpController {
     }
     @GetMapping("/delete")
     public Result<?> deleteEmp(Integer id){
-        boolean b = empService.removeById(id);
+        Boolean b = empService.removeById(id);
         Boolean b1=empService.removeEmpRole(id);
         return b?new Result<>().success().put("删除成功"):new Result<>().error().put("删除失败");
+    }
+
+    @GetMapping("/showEmpmenu")
+    public Result<?> showEmpmenu(Integer id){
+        Boolean b=empService.showEmpmenu(id);
+        return b?new Result<>().success().put(b):new Result<>().error().put(b);
+
     }
 
 

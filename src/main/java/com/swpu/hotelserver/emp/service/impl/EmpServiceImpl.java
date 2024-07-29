@@ -159,4 +159,14 @@ public class EmpServiceImpl extends ServiceImpl<EmpMapper, Emp> implements EmpSe
         return  empmapper.removeEmpRole(id);
 
     }
+
+    @Override
+    public Boolean showEmpmenu(Integer id) {
+        Integer i = empmapper.showEmpmenu(id);
+        if(i==1){
+            return true;
+        }
+
+        return false;
+    }
 }

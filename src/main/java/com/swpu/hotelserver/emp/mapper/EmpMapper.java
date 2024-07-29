@@ -21,5 +21,7 @@ public interface EmpMapper extends BaseMapper<Emp> {
     Boolean addEmpRole(@Param("emps") Emp emps);
     Boolean removeEmpRole(Integer id);
 
+    Integer showEmpmenu(Integer id);
+
 
 }

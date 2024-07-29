@@ -42,6 +42,12 @@
         delete from emp_role
         where emp_role.emp_id=#{id}
     </delete>
+    <select id="showEmpmenu" resultType="java.lang.Integer">
+        select perm_type from emp_role
+                                  INNER JOIN emp ON emp.id = emp_role.emp_id
+                                  INNER JOIN role ON role.id = emp_role.role_id
+        where emp.id=#{id}
+    </select>
 
 
 </mapper>
