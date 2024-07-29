@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class Order implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
-    @TableField("room_id")
-    private Integer roomId;
+    @TableField("room_num")
+    private Integer roomNum;
     @TableField("client_name")
     private String clientName;
     @TableField("order_num")
