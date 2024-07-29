@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.swpu.hotelserver.emp.entity.Order">
         <id column="id" property="id" />
-        <result column="room_id" property="roomId" />
+        <result column="room_num" property="roomNum" />
         <result column="client_name" property="clientName" />
         <result column="order_num" property="orderNum" />
     </resultMap>
@@ -13,7 +13,7 @@
     <select id="pageQuery" resultType="com.swpu.hotelserver.emp.dto.pageRoomOrderDTO">
         select o.*,r.price
         from order_form o
-        inner join hotel_db.room r on o.room_id = r.room_num
+        inner join hotel_db.room r on o.room_num = r.room_num
         <where>
             <if test="orderPageDTO.orderNum != null and orderPageDTO.orderNum != ''">
                 and o.order_num like concat('%',#{orderNum},'%')
@@ -48,7 +48,7 @@
             sum(case when year(create_time) = year(curdate() - interval 1 month ) and month(create_time) = month(curdate() - interval 1 month ) then price else 0 end) as lastMonthTurnover
         from
             order_form o
-        inner join hotel_db.room r on o.room_id = r.room_num
+        inner join hotel_db.room r on o.room_num = r.room_num
     </select>
 
 </mapper>

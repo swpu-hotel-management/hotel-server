@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class pageRoomOrderDTO {
     private Integer id;
-    private Integer roomId;
+    private Integer roomNum;
     private String clientName;
     private String orderNum;
     private LocalDateTime createTime;
