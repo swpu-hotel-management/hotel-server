@@ -47,11 +47,11 @@ public class CodeGenerator {
         dsc.setUsername("root");
         dsc.setPassword("123456");
         dsc.setUrl(
-                "jdbc:mysql://127.0.0.1:3306/shop_db?useUnicode=true&characterEncoding=utf8&&useSSL=false");
+                "jdbc:mysql://127.0.0.1:3306/hotel_db?useUnicode=true&characterEncoding=utf8&&useSSL=false");
         mpg.setDataSource(dsc);///
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setModuleName("shop");// 模块名///
+        pc.setModuleName("user");// 模块名///
         pc.setParent("com.swpu.userserver");///
         mpg.setPackageInfo(pc);
         // 自定义配置
@@ -83,7 +83,7 @@ public class CodeGenerator {
         // strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
         strategy.setRestControllerStyle(true);
         // strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
-        strategy.setInclude("goods");/// 表名
+        strategy.setInclude("client");/// 表名
 
         // strategy.setSuperEntityColumns("id");
         // strategy.setControllerMappingHyphenStyle(true);
